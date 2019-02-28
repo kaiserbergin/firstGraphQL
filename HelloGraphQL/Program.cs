@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GraphQL.Types;
+using System;
+using GraphQL;
 
 namespace HelloGraphQL
 {
@@ -6,7 +8,19 @@ namespace HelloGraphQL
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var schema = Schema.For(@"
+                type Query {
+                    hello: String
+                }
+            ");
+
+            var json = schema.Execute(x =>
+            {
+                x.Query = " { hello }";
+                x.Root = new { Hello = "Hello, GraphQL!" };
+            });
+
+            Console.WriteLine(json);
         }
     }
 }
